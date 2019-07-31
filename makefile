@@ -24,6 +24,11 @@ openshift:
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node1.openshift.local
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
+        # Install kernel headers / devel libraries to each of the hosts so the Sysdig Agent works
+        - echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
+        - echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node1.openshift.local
+        - echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
+        - echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
 	echo "Complete! Wait a minute for hosts to restart, then run 'make browse-openshift' to login with user 'admin' and password '123'."
 
 # Destroy the infrastructure.

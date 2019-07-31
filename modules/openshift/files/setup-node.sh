@@ -76,4 +76,4 @@ systemctl restart docker
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 
 # Install Kernel Headers for Sysdig Agent
-sudo yum -y install kernel-devel-$(uname -r)
+yum -y install kernel-devel-$(uname -r)
