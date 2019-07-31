@@ -74,3 +74,11 @@ systemctl restart docker
 # Allow the ec2-user to sudo without a tty, which is required when we run post
 # install scripts on the server.
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
+
+# Install Kernel Headers for Sysdig Agent
+sudo yum -y install kernel-devel-$(uname -r)
+
+# Download some apps to be installed later
+wget https://github.com/KranzSysdig/training/raw/master/labs.tar.gz
+tar -xvzf labs.tar.gz
+git clone https://github.com/GoogleCloudPlatform/microservices-demo.git

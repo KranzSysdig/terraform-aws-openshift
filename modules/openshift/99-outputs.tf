@@ -29,6 +29,16 @@ output "node2-private_ip" {
   value = "${aws_instance.node2.private_ip}"
 }
 
+output "node3-public_ip" {
+  value = "${aws_eip.node3_eip.public_ip}"
+}
+output "node3-private_dns" {
+  value = "${aws_instance.node3.private_dns}"
+}
+output "node3-private_ip" {
+  value = "${aws_instance.node3.private_ip}"
+}
+
 output "bastion-public_ip" {
   value = "${aws_eip.bastion_eip.public_ip}"
 }
