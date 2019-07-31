@@ -2,6 +2,8 @@ Cloned and modified from [https://github.com/dwmkerr/terraform-aws-openshift](ht
 
 Massive thanks to @dwmkerr for their awesome work on this.
 
+Make sure to install awscli first, and run 'aws configure' to set your credentials.
+
 # terraform-aws-openshift
 
 [![CircleCI](https://circleci.com/gh/dwmkerr/terraform-aws-openshift.svg?style=shield)](https://circleci.com/gh/dwmkerr/terraform-aws-openshift)
@@ -63,6 +65,10 @@ if [[ "$unamestr" == 'Linux' ]]; then
 elif [[ "$unamestr" == 'FreeBSD' ]]; then
         brew install -y awscli
 fi
+```
+3. Configure the AWS CLI with your credentials to avoid storing credentials within any script files
+```
+aws configure
 ```
 
 ## Creating the Cluster
