@@ -4,6 +4,57 @@ Massive thanks to @dwmkerr for their awesome work on this.
 
 Make sure to install awscli first, and run 'aws configure' to set your credentials.
 
+# Costs
+
+How much?
+There is a cost associated to this!
+
+- 1x t2.small Bastion host - $16.84/month
+- 1x m4.xlarge OS Master - $146.40/month
+- 3x m4.large OS Nodes - $219.60/month
+- + storage - total estimated $432.64/month
+- + network and other missed costs, round it up to $500/month
+
+https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d330ccde5228222c66d7a225c2cbd6d7ca712&v=ver20190718a0
+
+# TL;DR: Instructions
+
+- If you are using your own AWS account, don't use the root account, go to IAM and create a new user with API only access with the following privileges:
+	- EC2 full access
+	- Route53 full access
+	- VPC full access
+	- IAM full access (I don't like this, review, but TF does create users & roles)
+- AWS CLI
+	- aws configure
+	- Use the IAM role you just setup, not your root account!
+- Modify modules/openshift/01-tags.tf - Add required tags (name, description, terminationDate, expiryDate)
+- Edit variables.tf to change the AWS region you want to install into (us-east-1 / eu-central-1)
+- Standard OC installation
+	- eval `ssh-agent -s`
+	- make infrastructure
+	- <Security Groups>
+		- While testing / installing, edit the ingress groups to be limited to your IP only
+		- If you want to be extra secure, limit the ingress to your prospect only even after the install
+	- make openshift
+- Once the nodes are up, you can SSH into the master to check on things, deploy the Sysdig Agent and the demo apps.
+	- make ssh-master
+	- oc adm new-project voting-app
+	- oc apply -f lab1/manifests/ -n voting-app
+	- oc adm new-project java-app
+	- oc apply -f lab2/manifests/ -n java-app
+	- The following app was specifically at the request from a prospect
+	- oc adm new-project microservices-demo
+	- oc apply -f ./release/kubernetes-manifests.yaml -n microservices-demo
+	- Now follow the OpenShift install guide to install the Sysdig Agent - https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256671843/OpenShift+Agent+Installation+Steps
+	- If you get problems with the Sysdig Agent starting, please run './install-kernel-header.sh' from the terraform machine to fix.
+	- For your convenience, the agent configmap and daemonset have already been pulled
+
+Default OpenShift credentials - admin : sysdig123password
+
+To modify this password, ssh to the master node and run the following:
+
+- sudo htpasswd -cb /etc/origin/master/htpasswd admin <new password>
+
 # terraform-aws-openshift
 
 [![CircleCI](https://circleci.com/gh/dwmkerr/terraform-aws-openshift.svg?style=shield)](https://circleci.com/gh/dwmkerr/terraform-aws-openshift)
