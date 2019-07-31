@@ -1,3 +1,7 @@
+Cloned and modified from [https://github.com/dwmkerr/terraform-aws-openshift](https://github.com/dwmkerr/terraform-aws-openshift)
+
+Massive thanks to @dwmkerr for their awesome work on this.
+
 # terraform-aws-openshift
 
 [![CircleCI](https://circleci.com/gh/dwmkerr/terraform-aws-openshift.svg?style=shield)](https://circleci.com/gh/dwmkerr/terraform-aws-openshift)
