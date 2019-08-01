@@ -12,8 +12,8 @@ There is a cost associated to this!
 - 1x t2.small Bastion host - $16.84/month
 - 1x m4.xlarge OS Master - $146.40/month
 - 3x m4.large OS Nodes - $219.60/month
-- + storage - total estimated $432.64/month
-- + network and other missed costs, round it up to $500/month
+- add storage - total estimated $432.64/month
+- add network and other missed costs, round it up to $500/month
 
 https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d330ccde5228222c66d7a225c2cbd6d7ca712&v=ver20190718a0
 
@@ -54,6 +54,8 @@ Default OpenShift credentials - admin : sysdig123password
 To modify this password, ssh to the master node and run the following:
 
 - sudo htpasswd -cb /etc/origin/master/htpasswd admin <new password>
+
+# Giving access to the cluster to someone else
 
 # terraform-aws-openshift
 
