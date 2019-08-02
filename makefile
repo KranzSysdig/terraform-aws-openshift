@@ -1,5 +1,5 @@
-SSHPASS="UaRD4a9bbyNN"
-ENCPASS="$1$5RPVAd$XA/tJg1SZEQLayXZrlNpb/"
+SSHPASS=UaRD4a9bbyNN
+#ENCPASS=$$1$$J67GEhvK$$99MR19Qr9rlluoSoYdgRC0
 
 infrastructure:
 	# Get the modules, create the infrastructure.
@@ -10,6 +10,7 @@ openshift:
 	# Add our identity for ssh, add the host key to avoid having to accept the
 	# the host key manually. Also add the identity of each node to the bastion.
 	#ssh-add ~/.ssh/id_rsa
+	#ssh-keygen -t rsa -N "" -f key.pem
 	ssh-add key.pem
 	ssh-keyscan -t rsa -H $$(terraform output bastion-public_ip) >> ~/.ssh/known_hosts
 	ssh -A ec2-user@$$(terraform output bastion-public_ip) "ssh-keyscan -t rsa -H master.openshift.local >> ~/.ssh/known_hosts"
@@ -22,9 +23,9 @@ openshift:
 	cat install-from-bastion.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_ip)
 
 	# Change the ec2-user password on master node so we can SSH using password auth
-	echo 'sudo usermod -p $(ENCPASS) ec2-user' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
-	# Reset SSH config to allow password based logins to the master node
-	- echo 'sudo sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config; sudo service ssh restart' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
+	#echo 'sudo usermod -p '$(ENCPASS)' ec2-user' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
+	# Change SSH config to allow password based logins to the master node, leave the restart to later host reboot
+	#- echo 'sudo sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
 
 	# Now the installer is done, run the postinstall steps on each host.
 	# Note: these scripts cause a restart, so we use a hyphen to ignore the ssh
@@ -34,13 +35,14 @@ openshift:
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
 	# Install kernel headers / devel libraries to each of the hosts so the Sysdig Agent works
-	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
-	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node1.openshift.local
-	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
-	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
+	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
+	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node1.openshift.local
+	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
+	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
 	echo "Complete! Wait a minute for hosts to restart, then run 'make browse-openshift' to login with user 'admin' and password 'sysdig123password'."
 	echo "SSH password for the master node is '$(SSHPASS)'"
-	echo "Copy key.pem to then SSH through the bastion $$(terraform output bastion-public_ip)"
+	echo "Copy key.pem, chmod 0400, then SSH through the bastion $$(terraform output bastion-public_ip)"
+	echo "i.e. $$ ssh -t -A -i key.pem ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local"
 
 # Destroy the infrastructure.
 destroy:
