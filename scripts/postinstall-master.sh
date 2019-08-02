@@ -12,6 +12,8 @@ wget -P ~/sysdig-agent/ https://raw.githubusercontent.com/draios/sysdig-cloud-sc
 # Note: This script runs after the ansible install, use it to make configuration
 # changes which would otherwise be overwritten by ansible.
 sudo su
+#yum -y install kernel-devel-$(uname -r)
+echo yum -y install kernel-devel-$(uname -r) >> /etc/rc.local
 
 SSHPASS='UaRD4a9bbyNN'
 ENCPASS='$1$J67GEhvK$99MR19Qr9rlluoSoYdgRC0'
@@ -19,8 +21,6 @@ ENCPASS='$1$J67GEhvK$99MR19Qr9rlluoSoYdgRC0'
 # Create an htpasswd file, we'll use htpasswd auth for OpenShift.
 htpasswd -cb /etc/origin/master/htpasswd admin sysdig123password
 echo "Password for 'admin' set to 'sysdig123password'"
-# Install Kernel Headers for Sysdig Agent
-yum -y install kernel-devel-$(uname -r)
 
 # Update the docker config to allow OpenShift's local insecure registry. Also
 # use json-file for logging, so our Splunk forwarder can eat the container logs.

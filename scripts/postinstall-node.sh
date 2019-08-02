@@ -3,7 +3,8 @@
 # Note: This script runs after the ansible install, use it to make configuration
 # changes which would otherwise be overwritten by ansible.
 sudo su
-yum -y install kernel-devel-$(uname -r)
+#yum -y install kernel-devel-$(uname -r)
+echo yum -y install kernel-devel-$(uname -r) >> /etc/rc.local
 
 # Update the docker config to allow OpenShift's local insecure registry. Also
 # use json-file for logging, so our Splunk forwarder can eat the container logs.

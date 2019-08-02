@@ -35,10 +35,12 @@ openshift:
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
 	- cat ./scripts/postinstall-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
 	# Install kernel headers / devel libraries to each of the hosts so the Sysdig Agent works
-	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
-	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node1.openshift.local
-	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
-	#- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
+	echo 'Sleeping in the wildly unscientific assumption that everything will reboot within 30 seconds! If not, you may need to run the ./install-kernel-headers.sh script'
+	sleep 30
+	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh master.openshift.local
+	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node1.openshift.local
+	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node2.openshift.local
+	- echo 'sudo yum -y install kernel-devel-$(uname -r)' | ssh -A ec2-user@$$(terraform output bastion-public_ip) ssh node3.openshift.local
 	echo "Complete! Wait a minute for hosts to restart, then run 'make browse-openshift' to login with user 'admin' and password 'sysdig123password'."
 	echo "SSH password for the master node is '$(SSHPASS)'"
 	echo "Copy key.pem, chmod 0400, then SSH through the bastion $$(terraform output bastion-public_ip)"
