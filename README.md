@@ -19,16 +19,16 @@ https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d33
 
 # TL;DR: Instructions
 
-- If you are using your own AWS account, don't use the root account, go to IAM and create a new user with API only access with the following privileges:
+- If you are using your own AWS account, don't use the __root account__, go to IAM and create a new user with API only access with the following privileges:
 	- EC2 full access
 	- Route53 full access
 	- VPC full access
 	- IAM full access (I don't like this, review, but TF does create users & roles)
 - AWS CLI
-	- aws configure
+	- `aws configure`
 	- Use the IAM user you just setup, not your root account!
-- Modify modules/openshift/01-tags.tf - Add required tags (name, description, terminationDate, expiryDate)
-- Edit variables.tf to change the AWS region you want to install into (us-east-1 / eu-central-1)
+- Modify __modules/openshift/01-tags.tf__ - Add required tags (name, description, terminationDate, expiryDate)
+- Edit __variables.tf__ to change the AWS region you want to install into (us-east-1 / eu-central-1 etc...)
 - Standard OC installation
 	- create the __key.pem__ ssh key in the root directory of this repo
 		- E.g. `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"` 
