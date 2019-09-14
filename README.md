@@ -37,7 +37,7 @@ https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d33
 	- <Security Groups>
 		- While testing / installing, edit the ingress groups to be limited to your IP only
 		- If you want to be extra secure, limit the ingress to your prospect only even after the install
-	- make openshift
+	- `make openshift`
 - Once the nodes are up, you can SSH into the master to check on things, deploy the Sysdig Agent and the demo apps.
 	- make ssh-master
 	- oc adm new-project voting-app
