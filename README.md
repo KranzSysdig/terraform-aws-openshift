@@ -26,12 +26,14 @@ https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d33
 	- IAM full access (I don't like this, review, but TF does create users & roles)
 - AWS CLI
 	- aws configure
-	- Use the IAM role you just setup, not your root account!
+	- Use the IAM user you just setup, not your root account!
 - Modify modules/openshift/01-tags.tf - Add required tags (name, description, terminationDate, expiryDate)
 - Edit variables.tf to change the AWS region you want to install into (us-east-1 / eu-central-1)
 - Standard OC installation
-	- eval `ssh-agent -s`
-	- make infrastructure
+	- create the __key.pem__ ssh key in the root directory of this repo
+		- E.g. `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"` 
+	- `eval ssh-agent -s`
+	- `make infrastructure`
 	- <Security Groups>
 		- While testing / installing, edit the ingress groups to be limited to your IP only
 		- If you want to be extra secure, limit the ingress to your prospect only even after the install
