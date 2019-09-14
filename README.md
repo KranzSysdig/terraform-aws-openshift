@@ -55,7 +55,7 @@ Default OpenShift credentials - admin : sysdig123password
 
 To modify this password, ssh to the master node and run the following:
 
-- sudo htpasswd -cb /etc/origin/master/htpasswd admin <new password>
+- `sudo htpasswd -cb /etc/origin/master/htpasswd admin <new password>`
 
 # Giving access to the cluster to someone else
 
