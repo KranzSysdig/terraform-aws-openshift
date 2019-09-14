@@ -1,4 +1,4 @@
-# Define the RHEL 7.5 AMI by:
+# Define the RHEL 7.7 AMI by:
 # RedHat, Latest, x86_64, EBS, HVM, RHEL 7.2
 data "aws_ami" "rhel7_5" {
   most_recent = true
