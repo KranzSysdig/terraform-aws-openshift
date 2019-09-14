@@ -39,14 +39,14 @@ https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d33
 		- If you want to be extra secure, limit the ingress to your prospect only even after the install
 	- `make openshift`
 - Once the nodes are up, you can SSH into the master to check on things, deploy the Sysdig Agent and the demo apps.
-	- make ssh-master
-	- oc adm new-project voting-app
-	- oc apply -f lab1/manifests/ -n voting-app
-	- oc adm new-project java-app
-	- oc apply -f lab2/manifests/ -n java-app
+	- `make ssh-master`
+	- `oc adm new-project voting-app`
+	- `oc apply -f lab1/manifests/ -n voting-app`
+	- `oc adm new-project java-app`
+	- `oc apply -f lab2/manifests/ -n java-app`
 	- The following app was specifically at the request from a prospect
-	- oc adm new-project microservices-demo
-	- oc apply -f ./release/kubernetes-manifests.yaml -n microservices-demo
+	- `oc adm new-project microservices-demo`
+	- `oc apply -f ./release/kubernetes-manifests.yaml -n microservices-demo`
 	- Now follow the OpenShift install guide to install the Sysdig Agent - https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256671843/OpenShift+Agent+Installation+Steps
 	- If you get problems with the Sysdig Agent starting, please run './install-kernel-header.sh' from the terraform machine to fix.
 	- For your convenience, the agent configmap and daemonset have already been pulled
