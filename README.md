@@ -32,7 +32,7 @@ https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d33
 - Standard OC installation
 	- create the __key.pem__ ssh key in the root directory of this repo
 		- E.g. `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"` 
-	- ``eval `ssh-agent -s`` and `ssh-add key.pem`
+	- ``eval `ssh-agent -s``` and `ssh-add key.pem`
 	- `make infrastructure`
 	- <Security Groups>
 		- While testing / installing, edit the ingress groups to be limited to your IP only
