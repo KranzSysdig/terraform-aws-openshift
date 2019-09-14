@@ -1,6 +1,6 @@
 # Define the RHEL 7.7 AMI by:
 # RedHat, Latest, x86_64, EBS, HVM, RHEL 7.2
-data "aws_ami" "rhel7_5" {
+data "aws_ami" "rhel7_7" {
   most_recent = true
 
   owners = ["309956199498"] // Red Hat's account ID.
