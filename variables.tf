@@ -38,8 +38,8 @@ variable "cidr_public" {
   default = [
     {
       cidrpublic_subnet1 = "172.16.1.0/24"
-      cidrpublic_subnet1 = "172.16.2.0/24"
-      cidrpublic_subnet1 = "172.16.3.0/24"
+      cidrpublic_subnet2 = "172.16.2.0/24"
+      cidrpublic_subnet3 = "172.16.3.0/24"
       }
     ]
   }
@@ -54,26 +54,26 @@ variable "cidr_private" {
   default = [
     {
       cidrprivate_subnet1 = "172.16.16.0/20"
-      cidrprivate_subnet1 = "172.16.32.0/20"
-      cidrprivate_subnet1 = "172.16.48.0/20"
+      cidrprivate_subnet2 = "172.16.32.0/20"
+      cidrprivate_subnet3 = "172.16.48.0/20"
       }
     ]
   }
 
 # Set the ec2 instnace types to use in the deployment
 variable "ec2_instances" {
-  type = list(object({
+  type = object({
     ec2_bastion = string
-    ec2_master = string
-    ec2_infra = string
-    ec2_node = string
-    }))
+    ec2_master  = string
+    ec2_infra   = string
+    ec2_node    = string
+    })
   default = [
     {
       ec2_bastion = "t2.micro"
-      ec2_master = "m4.xlarge"
-      ec2_infra = "m4.large"
-      ec2_node = "m4.large"
+      ec2_master  = "m4.xlarge"
+      ec2_infra   = "m4.large"
+      ec2_node    = "m4.large"
       }
     ]
   }
@@ -85,16 +85,16 @@ variable "rhel_release" {
 
 # Set the AWS AMI details to use with CentOS release
 variable "centos_release" {
-  type = list(object ({
+  type = object ({
     centos_version = string
-    product_code = string
-    product_owner = sting
-    }))
+    product_code   = string
+    product_owner  = sting
+    })
   default = [
     {
       centos_version = "7"
-      product_code = "aw0evgkw8e5c1q413zgy5pjce"
-      product_owner = "aws-marketplace"
+      product_code   = "aw0evgkw8e5c1q413zgy5pjce"
+      product_owner  = "aws-marketplace"
       }
     ]
   }
