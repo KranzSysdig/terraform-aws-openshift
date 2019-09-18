@@ -14,19 +14,19 @@ provider "template" {
 
 #  Create the OpenShift cluster using defined child modules nested at "modules/openshift".
 module "openshift" {
-  source = "./modules/openshift"
-  region = "${var.region}"
-  clusterid = "${var.cluster_name}"
-  domain_dns = "${var.domain_dns}"  
-  ec2_type_bastion = "${var.ec2_instances.ec2_bastion}"
-  ec2_type_master = "${var.ec2_instances.ec2_master}"
-  ec2_type_infra = "${var.ec2_instances.ec2_infra}"
-  ec2_type_node = "${var.ec2_instances.ec2_node}"
-  vpc_cidr = "${var.cidr_vpc}"
-  public_subnet_cidr = "172.16.0.0/24"
+  source              = "./modules/openshift"
+  region              = "${var.region}"
+  clusterid           = "${var.cluster_name}"
+  domain_dns          = "${var.domain_dns}"  
+  ec2_type_bastion    = "${var.ec2_instances.ec2_bastion}"
+  ec2_type_master     = "${var.ec2_instances.ec2_master}"
+  ec2_type_infra      = "${var.ec2_instances.ec2_infra}"
+  ec2_type_node       = "${var.ec2_instances.ec2_node}"
+  vpc_cidr            = "${var.cidr_vpc}"
+  public_subnet_cidr  = "172.16.0.0/24"
   private_subnet_cidr = "172.16.16.0/20"
-  key_name = "${var.cluster_name}.${var.dns_domain}"
-  public_key_path = "${var.public_key_path}"
+  key_name            = "${var.cluster_name}.${var.dns_domain}"
+  public_key_path     = "${var.public_key_path}"
 }
 
 #  Output some useful variables for quick SSH access etc.
