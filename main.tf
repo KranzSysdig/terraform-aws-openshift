@@ -22,7 +22,7 @@ module "openshift" {
   ec2_type_master = "${var.ec2_instances.ec2_master}"
   ec2_type_infra = "${var.ec2_instances.ec2_infra}"
   ec2_type_node = "${var.ec2_instances.ec2_node}"
-  vpc_cidr = "172.16.0.0/16"
+  vpc_cidr = "${var.cidr_vpc}"
   public_subnet_cidr = "172.16.0.0/24"
   private_subnet_cidr = "172.16.16.0/20"
   key_name = "${var.cluster_name}.${var.dns_domain}"
