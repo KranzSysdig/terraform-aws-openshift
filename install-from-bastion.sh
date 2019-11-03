@@ -5,6 +5,7 @@ sudo -E su
 
 # Install dev tools.
 yum install -y "@Development Tools" python2-pip openssl-devel python-devel gcc libffi-devel
+yum update -y
 
 # Get the OKD 3.11 installer.
 pip install -I ansible==2.6.5

@@ -19,32 +19,34 @@ https://calculator.s3.amazonaws.com/index.html#r=IAD&s=EC2&key=files/calc-e89d33
 
 # TL;DR: Instructions
 
-- If you are using your own AWS account, don't use the root account, go to IAM and create a new user with API only access with the following privileges:
+- If you are using your own AWS account, don't use the __root account__, go to IAM and create a new user with API only access with the following privileges:
 	- EC2 full access
 	- Route53 full access
 	- VPC full access
 	- IAM full access (I don't like this, review, but TF does create users & roles)
 - AWS CLI
-	- aws configure
-	- Use the IAM role you just setup, not your root account!
-- Modify modules/openshift/01-tags.tf - Add required tags (name, description, terminationDate, expiryDate)
-- Edit variables.tf to change the AWS region you want to install into (us-east-1 / eu-central-1)
+	- `aws configure`
+	- Use the IAM user you just setup, not your root account!
+- Modify __modules/openshift/01-tags.tf__ - Add required tags (name, description, terminationDate, expiryDate)
+- Edit __variables.tf__ to change the AWS region you want to install into (us-east-1 / eu-central-1 etc...)
 - Standard OC installation
-	- eval `ssh-agent -s`
-	- make infrastructure
+	- create the __key.pem__ ssh key in the root directory of this repo
+		- E.g. `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"` 
+	- ``eval `ssh-agent -s` ``and `ssh-add key.pem`
+	- `make infrastructure`
 	- <Security Groups>
 		- While testing / installing, edit the ingress groups to be limited to your IP only
 		- If you want to be extra secure, limit the ingress to your prospect only even after the install
-	- make openshift
+	- `make openshift`
 - Once the nodes are up, you can SSH into the master to check on things, deploy the Sysdig Agent and the demo apps.
-	- make ssh-master
-	- oc adm new-project voting-app
-	- oc apply -f lab1/manifests/ -n voting-app
-	- oc adm new-project java-app
-	- oc apply -f lab2/manifests/ -n java-app
+	- `make ssh-master`
+	- `oc adm new-project voting-app`
+	- `oc apply -f lab1/manifests/ -n voting-app`
+	- `oc adm new-project java-app`
+	- `oc apply -f lab2/manifests/ -n java-app`
 	- The following app was specifically at the request from a prospect
-	- oc adm new-project microservices-demo
-	- oc apply -f ./release/kubernetes-manifests.yaml -n microservices-demo
+	- `oc adm new-project microservices-demo`
+	- `oc apply -f ./release/kubernetes-manifests.yaml -n microservices-demo`
 	- Now follow the OpenShift install guide to install the Sysdig Agent - https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256671843/OpenShift+Agent+Installation+Steps
 	- If you get problems with the Sysdig Agent starting, please run './install-kernel-header.sh' from the terraform machine to fix.
 	- For your convenience, the agent configmap and daemonset have already been pulled
@@ -53,7 +55,7 @@ Default OpenShift credentials - admin : sysdig123password
 
 To modify this password, ssh to the master node and run the following:
 
-- sudo htpasswd -cb /etc/origin/master/htpasswd admin <new password>
+- `sudo htpasswd -cb /etc/origin/master/htpasswd admin <new password>`
 
 # Giving access to the cluster to someone else
 

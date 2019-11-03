@@ -1,4 +1,4 @@
-# Setup our providers so that we have deterministic dependecy resolution. 
+# Setup our Terraform providers so that we have deterministic dependecy resolution. 
 provider "aws" {
   region  = "${var.region}"
   version = "~> 2.19"
@@ -12,20 +12,24 @@ provider "template" {
   version = "~> 2.1"
 }
 
-//  Create the OpenShift cluster using our module.
+#  Create the OpenShift cluster using defined child modules nested at "modules/openshift".
 module "openshift" {
-  source          = "./modules/openshift"
-  region          = "${var.region}"
-  amisize         = "m4.large"    //  Smallest that meets the min specs for OS
-  vpc_cidr        = "10.0.0.0/16"
-  subnet_cidr     = "10.0.1.0/24"
-  key_name        = "openshift"
-  public_key_path = "${var.public_key_path}"
-  cluster_name    = "openshift-cluster"
-  cluster_id      = "openshift-cluster-${var.region}"
+  source              = "./modules/openshift"
+  region              = "${var.region}"
+  clusterid           = "${var.cluster_name}"
+  domain_dns          = "${var.domain_dns}"  
+  ec2_type_bastion    = "${var.ec2_instances.ec2_bastion}"
+  ec2_type_master     = "${var.ec2_instances.ec2_master}"
+  ec2_type_infra      = "${var.ec2_instances.ec2_infra}"
+  ec2_type_node       = "${var.ec2_instances.ec2_node}"
+  vpc_cidr            = "${var.cidr_vpc}"
+  public_subnet_cidr  = "172.16.0.0/24"
+  private_subnet_cidr = "172.16.16.0/20"
+  key_name            = "${var.cluster_name}.${var.dns_domain}"
+  public_key_path     = "${var.public_key_path}"
 }
 
-//  Output some useful variables for quick SSH access etc.
+#  Output some useful variables for quick SSH access etc.
 output "master-url" {
   value = "https://${module.openshift.master-public_ip}.xip.io:8443"
 }
